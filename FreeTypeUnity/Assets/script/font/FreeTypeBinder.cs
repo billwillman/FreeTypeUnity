@@ -7,6 +7,27 @@ using UnityEngine;
 namespace FreeType {
     // FreeType字体管理
     public class FreeTypeBinder : MonoBehaviour {
+
+        private static FreeTypeBinder m_Instance = null;
+
+        public static FreeTypeBinder Instance
+        {
+            get
+            {
+                if (m_Instance == null)
+                {
+                    GameObject obj = new GameObject("FontMgr", typeof(FreeTypeBinder));
+                    m_Instance = obj.GetComponent<FreeTypeBinder>();
+                }
+                return m_Instance;
+            }
+        }
+
+        public static FreeTypeBinder GetInstance()
+        {
+            return Instance;
+        }
+
         private IntPtr m_FreeTypePointer = default(IntPtr);
         // 字体管理MAP
         private Dictionary<FontType, IntPtr> m_FontsMap = new Dictionary<FontType, IntPtr>(FontTypeComparser.Default);
@@ -138,6 +159,7 @@ namespace FreeType {
         /*-------------------------------------------------------------*/
 
         void Awake() {
+            m_Instance = this;
             Init();
         }
 
@@ -145,6 +167,8 @@ namespace FreeType {
             // 删除缓存字体
             ClearAllFonts();
             UnInit();
+
+            m_Instance = null;
         }
     }
 
