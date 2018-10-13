@@ -1,0 +1,24 @@
+:Base eXeScEng
+:Title eXeScope Help
+1 Abstract
+2 Contents = Content
+2 What is eXeScope ? = eXeScope
+1 Functions
+2 Functions of eXeScope = Func
+2 File Types Supported = FType
+2 Various Usage of eXeScope = Usage
+2 Operation
+3 Menu and Button = Ope
+3 Edit Dialog Box = EDialog
+3 Edit Menu = EMenu
+3 Edit Delphi Form = EDelphi
+3 Display Type Library = ETypeLib
+3 Find Strings = EFind
+3 Batch Mode Editing using Log file = EBatch
+3 Output rc file = ERc
+1 Environment, Limitations
+2 Environment and Install = Machine
+2 Limitations, Warning = Limit 
+1 Registration and Copyright
+2 Registration = Regist
+2 About Copyright = CopyRight
