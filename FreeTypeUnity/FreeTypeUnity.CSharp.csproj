@@ -72,8 +72,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\script\FreeTypeBinder.cs" />
-    <Compile Include="Assets\script\FreeTypeType.cs" />
+    <Compile Include="Assets\script\font\FreeTypeBinder.cs" />
+    <Compile Include="Assets\script\font\FreeTypeType.cs" />
     <Compile Include="Assets\script\util\FilePathMgr.cs" />
     <Compile Include="Assets\script\util\Singleton.cs" />
     <Compile Include="Assets\script\util\StructComparser.cs" />
