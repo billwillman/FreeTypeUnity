@@ -7,7 +7,7 @@ namespace FreeType {
 
     public struct FontType: IEquatable<FontType> {
         public string fontName;
-        public int fontSize;
+        public uint fontSize;
 
         public bool Equals(FontType other) {
             return this == other;
