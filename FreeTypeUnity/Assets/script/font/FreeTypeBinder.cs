@@ -46,8 +46,8 @@ namespace FreeType {
         [DllImport(FreeTypeDll, CallingConvention = CallingConvention.Cdecl)]
         private static extern void FT_Done_Face(IntPtr pointer);
         [DllImport(FreeTypeDll, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int FT_New_Memory_Face(IntPtr library, [MarshalAs(UnmanagedType.LPArray)]byte[] fontBuf, 
-            [MarshalAs(UnmanagedType.U4)]uint fontSize, [MarshalAs(UnmanagedType.U4)]uint faceIndex, out IntPtr font);
+        private static extern int FT_New_Memory_Face(IntPtr library, [MarshalAs(UnmanagedType.LPArray)]byte[] fontBuf,
+            [MarshalAs(UnmanagedType.U4)]uint byteSize, [MarshalAs(UnmanagedType.U4)]uint fontSize, out IntPtr font);
         /*--------------------------------------------------------------*/
 #endif
 
@@ -70,9 +70,9 @@ namespace FreeType {
 #endif
         }
 
-        private static int New_Memory_Face(IntPtr library, byte[] fontBuf, uint fontSize, uint faceIndex, out IntPtr font) {
+        private static int New_Memory_Face(IntPtr library, byte[] fontBuf, uint fontSize, out IntPtr font) {
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_IOS
-            return FT_New_Memory_Face(library, fontBuf, fontSize, faceIndex, out font);
+            return FT_New_Memory_Face(library, fontBuf, (uint)fontBuf.Length, fontSize, out font);
 #endif
         }
 
@@ -127,14 +127,14 @@ namespace FreeType {
         /// <param name="fontName">字体名</param>
         /// <param name="fontSize">字体大小</param>
         /// <returns></returns>
-        public IntPtr CreateFontFromBuffer(byte[] buffer, string fontName, uint fontSize = 0, uint faceIndex = 0) {
+        public IntPtr CreateFontFromBuffer(byte[] buffer, string fontName, uint fontSize = 0) {
             IntPtr ret = FindFont(fontName, fontSize);
             var defaultPrt = default(IntPtr);
             if (ret != defaultPrt)
                 return ret;
             if (buffer == null || buffer.Length <= 0)
                 return defaultPrt;
-            int err = New_Memory_Face(m_FreeTypePointer, buffer, fontSize, faceIndex, out ret);
+            int err = New_Memory_Face(m_FreeTypePointer, buffer, fontSize, out ret);
             if (err != 0)
                 throw new Exception(string.Format("Could not open font: errCode {0:D}", err));
 
