@@ -6,6 +6,23 @@ LOCAL_CFLAGS := -DANDROID_NDK \
   
 LOCAL_C_INCLUDES :=$(LOCAL_PATH)/../../include \
 
+define walk
+  $(wildcard $(1)) $(foreach e, $(wildcard $(1)/*), $(call walk, $(e)))
+endef
+
+autofit_dir = $(call walk, $(LOCAL_PATH)/../../src/autofit)
+base_dir = $(call walk, $(LOCAL_PATH)/../../src/base)
+bdf_dir = $(call walk, $(LOCAL_PATH)/../../src/bdf)
+bzip2_dir = $(call walk, $(LOCAL_PATH)/../../src/bzip2)
+cache_dir = $(call walk, $(LOCAL_PATH)/../../src/cache)
+cff_dir = $(call walk, $(LOCAL_PATH)/../../src/cff)
+cid_dir = $(call walk, $(LOCAL_PATH)/../../src/cid)
+gxvalid_dir = $(call walk, $(LOCAL_PATH)/../../src/gxvalid)
+gzip_dir = $(call walk, $(LOCAL_PATH)/../../src/gzip)
+lzw_dir = $(call walk, $(LOCAL_PATH)/../../src/lzw)
+otvalid_dir = $(call walk, $(LOCAL_PATH)/../../src/otvalid)
+pcf_dir = $(call walk, $(LOCAL_PATH)/../../src/pcf)
+
 LOCAL_SRC_FILES := \
  ../../src/autofit/autofit.c \
  ../../src/base/basepic.c \
