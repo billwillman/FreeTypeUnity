@@ -60,7 +60,7 @@ namespace FreeType {
         public override int GetHashCode() {
             int ret = FilePathMgr.InitHashValue();
             FilePathMgr.HashCode(ref ret, fontName);
-            FilePathMgr.HashCode(ref ret, fontSize);
+            FilePathMgr.HashCode(ref ret, faceIndex);
             return ret;
         }
     }
