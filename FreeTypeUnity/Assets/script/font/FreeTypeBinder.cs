@@ -176,6 +176,29 @@ namespace FreeType {
             return ret;
         }
 
+        private void ChangeFontSize(FreeTypeFont font, uint size)
+        {
+            if (font == null || font.font == default(IntPtr))
+                return;
+            if (font.currentSize == size)
+                return;
+            font.currentSize = size;
+            ApplyFont(font);
+        }
+
+        // 改变字体大小
+        public void ChangeFontSize(uint newSize, string fontName, uint faceIndex = 0)
+        {
+            FontType key = new FontType();
+            key.fontName = fontName;
+            key.faceIndex = faceIndex;
+            FreeTypeFont font;
+            if (m_FontsMap.TryGetValue(key, out font))
+            {
+                ChangeFontSize(font, newSize);
+            }
+        }
+
         private void ApplyFont(FreeTypeFont font)
         {
             if (font == null || font.font == default(IntPtr))
