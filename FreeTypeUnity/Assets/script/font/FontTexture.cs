@@ -38,6 +38,8 @@ namespace FreeType
             else
             {
                 m_FontTex = new Texture2D(m_MaxWidth, m_MaxHeight, TextureFormat.Alpha8, false, true);
+                m_FontTex.wrapMode = TextureWrapMode.Clamp;
+                m_FontTex.hideFlags = HideFlags.DontSave | HideFlags.NotEditable;
             }
 
             if (m_Combine != null)
@@ -54,7 +56,7 @@ namespace FreeType
         {
             if (m_Combine == null)
                 return;
-
+            
         }
 
         private void DestroyFontTex()
