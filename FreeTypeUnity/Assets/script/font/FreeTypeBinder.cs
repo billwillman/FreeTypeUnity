@@ -118,6 +118,23 @@ namespace FreeType {
             }
         }
 
+        private void DestroyFont(FreeTypeFont font)
+        {
+            if (font == null)
+                return;
+            var defaultPtr = default(IntPtr);
+            if (font.font != defaultPtr)
+            {
+                Done_Face(font.font);
+                font.font = defaultPtr;
+            }
+            if (font.fontTexture != null)
+            {
+                font.fontTexture.OnDestroy();
+                font.fontTexture = null;
+            }
+        }
+
         // 释放字体库
         public void FreeFont(string fontName, uint faceIndex = 0) {
             FreeTypeFont font;
@@ -126,10 +143,8 @@ namespace FreeType {
             key.faceIndex = faceIndex;
             if (m_FontsMap.TryGetValue(key, out font))
             {
-                if (font != null && font.font != default(IntPtr))
-                {
-                    Done_Face(font.font);
-                }
+
+                DestroyFont(font);
                 m_FontsMap.Remove(key);
             }
         }
@@ -278,12 +293,10 @@ namespace FreeType {
         }
 
         public void ClearAllFonts() {
-            var defaultPtr = default(IntPtr);
             var iter = m_FontsMap.GetEnumerator();
             while (iter.MoveNext()) {
                 var font = iter.Current.Value;
-                if (font != null && font.font != defaultPtr)
-                    Done_Face(font.font);
+                DestroyFont(font);
             }
             iter.Dispose();
             m_FontsMap.Clear();

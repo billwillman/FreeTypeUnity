@@ -21,7 +21,9 @@ namespace FreeType {
         public IntPtr font;
         // 当前大小
         public uint currentSize = 16;
-        
+        // 生成的纹理
+
+        public FontTexture fontTexture = null;
     }
 
     public class FontTypeComparser : StructComparser<FontType> { }
@@ -68,10 +70,6 @@ namespace FreeType {
     public class FontRectKey : IEquatable<FontRectKey>
     {
         public char value;
-        // 字体名
-        public string fontName;
-        // 字体Face
-        public uint faceIndex;
         // 字体大小
         public uint fontSize;
         // 字体大小类型
@@ -88,9 +86,8 @@ namespace FreeType {
 
         public static bool operator ==(FontRectKey a, FontRectKey b)
         {
-            return (a.faceIndex == b.faceIndex) &&
-                    (a.value == b.value) && (a.fontSize == b.fontSize) && (a.fontSizeType == b.fontSizeType) &&
-                    (a.hDpi == b.hDpi) && (a.vDpi == b.vDpi) && (string.Compare(a.fontName, b.fontName) == 0);
+            return  (a.value == b.value) && (a.fontSize == b.fontSize) && (a.fontSizeType == b.fontSizeType) &&
+                    (a.hDpi == b.hDpi) && (a.vDpi == b.vDpi);
         }
 
         public static bool operator !=(FontType a, FontType b)
@@ -120,8 +117,6 @@ namespace FreeType {
         {
             int ret = FilePathMgr.InitHashValue();
             FilePathMgr.HashCode(ref ret, value);
-            FilePathMgr.HashCode(ref ret, faceIndex);
-            FilePathMgr.HashCode(ref ret, fontName);
             FilePathMgr.HashCode(ref ret, fontSize);
             FilePathMgr.HashCode(ref ret, fontSizeType);
             FilePathMgr.HashCode(ref ret, hDpi);

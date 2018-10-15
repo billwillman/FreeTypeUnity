@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\script\font\BTree.cs" />
+    <Compile Include="Assets\script\font\FontTexture.cs" />
     <Compile Include="Assets\script\font\FreeTypeBinder.cs" />
     <Compile Include="Assets\script\font\FreeTypeType.cs" />
     <Compile Include="Assets\script\font\fontRectCombine.cs" />

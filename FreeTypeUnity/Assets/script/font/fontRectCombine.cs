@@ -16,5 +16,17 @@ namespace FreeType
     public class FontRectCombine
     {
         private RectCombineType m_CombineType = RectCombineType.right;
+        // 根节点
+        private BTreeNode<FontRectKey> m_Root = null;
+        private int m_MaxWidth = 1024;
+        private int m_MaxHeight = 1024;
+        private PicNode<FontRectKey> m_CurrentPic = null;
+
+        public FontRectCombine(int maxWidth = 1024, int maxHeight = 1024, RectCombineType combineType = RectCombineType.right)
+        {
+            m_MaxWidth = maxWidth;
+            m_MaxHeight = maxHeight;
+            m_CombineType = combineType;
+        }
     }
 }
