@@ -20,6 +20,8 @@ namespace FreeType
         private int m_MaxWidth = 1024;
         private int m_MaxHeight = 1024;
         private PicNode<FontRectKey> m_CurrentPic = null;
+        private Dictionary<FontRectKey, PicNode<FontRectKey>> m_PicNodeMap = new Dictionary<FontRectKey, PicNode<FontRectKey>>();
+        private FontRectKey m_FindKey = new FontRectKey();
 
         public FontRectCombine(int maxWidth = 1024, int maxHeight = 1024, RectCombineType combineType = RectCombineType.right)
         {
@@ -28,8 +30,50 @@ namespace FreeType
             m_CombineType = combineType;
         }
 
+        // 查找
+        public PicNode<FontRectKey> FindPicNode(char value, uint fontSize, FreeTypeSizeType fontSizeType, uint hDpi, uint vDpi)
+        {
+            m_FindKey.value = value;
+            m_FindKey.fontSizeType = fontSizeType;
+            m_FindKey.hDpi = hDpi;
+            m_FindKey.vDpi = vDpi;
+            PicNode<FontRectKey> ret;
+            if (m_PicNodeMap.TryGetValue(m_FindKey, out ret))
+                return ret;
+            return null;
+        }
+
+        public bool InsertNode(char value, uint fontSize, FreeTypeSizeType fontSizeType, uint hDpi, uint vDpi, int width, int height)
+        {
+            // 后面考虑通过池中取
+            FontRectKey key = new FontRectKey();
+            key.value = value;
+            key.fontSize = fontSize;
+            key.fontSizeType = fontSizeType;
+            key.hDpi = hDpi;
+            key.vDpi = vDpi;
+
+            return InsertNode(key, width, height);
+        }
+
+        private bool InsertNode(FontRectKey key, int width, int height)
+        {
+            if (key == null)
+                return false;
+            PicNode<FontRectKey> newNode = new PicNode<FontRectKey>();
+            newNode.key = key;
+            newNode.width = width;
+            newNode.height = height;
+            bool ret = InsertNode(newNode);
+            if (ret)
+            {
+                m_PicNodeMap[key] = newNode;
+            }
+            return ret;
+        }
+
         // 插入节点
-        internal bool InsertNode(PicNode<FontRectKey> newNode)
+        private bool InsertNode(PicNode<FontRectKey> newNode)
         {
             if (newNode == null)
                 return false;
