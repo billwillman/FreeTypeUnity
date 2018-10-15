@@ -19,9 +19,28 @@ namespace FreeType
             }
         }
 
+        private void DestroyFontRectCombine()
+        {
+            if (m_Combine != null)
+            {
+                m_Combine.OnDestroy();
+                m_Combine = null;
+            }
+        }
+
         public void OnDestroy()
         {
             DestroyFontTex();
+            DestroyFontRectCombine();
         }
+
+        // 查找文字
+        public PicNode<FontRectKey> FindChar(char value, FreeTypeFont font)
+        {
+            if (m_Combine == null || font == null || font.font == null)
+                return null;
+            return m_Combine.FindPicNode(value, font.currentSize, font.sizeType, font.hDpi, font.vDpi);
+        }
+
     }
 }

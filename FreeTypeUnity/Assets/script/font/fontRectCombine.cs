@@ -21,6 +21,7 @@ namespace FreeType
         private int m_MaxHeight = 1024;
         private PicNode<FontRectKey> m_CurrentPic = null;
         private Dictionary<FontRectKey, PicNode<FontRectKey>> m_PicNodeMap = new Dictionary<FontRectKey, PicNode<FontRectKey>>();
+        // 查找专用
         private FontRectKey m_FindKey = new FontRectKey();
 
         public FontRectCombine(int maxWidth = 1024, int maxHeight = 1024, RectCombineType combineType = RectCombineType.right)
@@ -28,6 +29,35 @@ namespace FreeType
             m_MaxWidth = maxWidth;
             m_MaxHeight = maxHeight;
             m_CombineType = combineType;
+        }
+
+        /// <summary>
+        /// 重建字体, 先实现功能，后面可以考虑优化GC
+        /// </summary>
+        /// <param name="maxWidth">重建设置最大宽</param>
+        /// <param name="maxHeight">重建设置最大高</param>
+        /// <returns></returns>
+        public bool ReBuild(int maxWidth, int maxHeight)
+        {
+            m_MaxWidth = maxWidth;
+            m_MaxHeight = maxHeight;
+
+            var oldMap = m_PicNodeMap;
+
+            m_PicNodeMap = new Dictionary<FontRectKey, PicNode<FontRectKey>>();
+            m_Root = null;
+            m_CurrentPic = null;
+
+            var iter = oldMap.GetEnumerator();
+            while (iter.MoveNext())
+            {
+                var node = iter.Current.Value;
+                if (node != null && node.key != null)
+                    InsertNode(node.key.value, node.key.fontSize, node.key.fontSizeType, node.key.hDpi, node.key.vDpi, node.width, node.height);
+            }
+            iter.Dispose();
+
+            return true;
         }
 
         // 查找
@@ -226,5 +256,11 @@ namespace FreeType
 
             return false;
         }
+
+        public void OnDestroy()
+        {
+
+        }
+
     }
 }
