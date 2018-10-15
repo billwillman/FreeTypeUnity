@@ -259,7 +259,11 @@ namespace FreeType
 
         public void OnDestroy()
         {
-
+            // 暂时这样后面考虑回池等
+            m_Root = null;
+            m_CurrentPic = null;
+            if (m_PicNodeMap != null)
+                m_PicNodeMap.Clear();
         }
 
     }
