@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="Assets\script\font\FreeTypeBinder.cs" />
     <Compile Include="Assets\script\font\FreeTypeType.cs" />
+    <Compile Include="Assets\script\font\fontRectCombine.cs" />
     <Compile Include="Assets\script\test\fontTest.cs" />
     <Compile Include="Assets\script\util\FilePathMgr.cs" />
     <Compile Include="Assets\script\util\Singleton.cs" />

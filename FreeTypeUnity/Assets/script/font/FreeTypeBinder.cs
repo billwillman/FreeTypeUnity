@@ -134,6 +134,17 @@ namespace FreeType {
             }
         }
 
+        public FreeTypeFont FindFreeTypeFont(string fontName, uint faceIndex = 0)
+        {
+            FontType key = new FontType();
+            key.fontName = fontName;
+            key.faceIndex = faceIndex;
+            FreeTypeFont ret;
+            if (!m_FontsMap.TryGetValue(key, out ret))
+                return null;
+            return ret;
+        }
+
         public IntPtr FindFont(string fontName, uint faceIndex = 0)
         {
             FontType key = new FontType();
@@ -197,6 +208,56 @@ namespace FreeType {
             {
                 ChangeFontSize(font, newSize);
             }
+        }
+
+        public void ChangeDPIMode(uint hDpi, uint vDpi, uint size, string fontName, uint faceIndex = 0)
+        {
+            FontType key = new FontType();
+            key.fontName = fontName;
+            key.faceIndex = faceIndex;
+            FreeTypeFont font;
+            if (m_FontsMap.TryGetValue(key, out font))
+            {
+                ChangeDPIMode(hDpi, vDpi, size, font);
+            }
+        }
+
+        private void ChangeDPIMode(uint hDpi, uint vDpi, uint size, FreeTypeFont font)
+        {
+            if (font == null || font.font == null)
+                return;
+            bool isChanged = font.hDpi != hDpi || font.vDpi != vDpi || font.currentSize != size || font.sizeType != FreeTypeSizeType.useDPI;
+            if (!isChanged)
+                return;
+            font.hDpi = hDpi;
+            font.vDpi = vDpi;
+            font.currentSize = size;
+            font.sizeType = FreeTypeSizeType.useDPI;
+            ApplyFont(font);
+        }
+
+        public void ChangePixelMode(uint size, string fontName, uint faceIndex = 0)
+        {
+            FontType key = new FontType();
+            key.fontName = fontName;
+            key.faceIndex = faceIndex;
+            FreeTypeFont font;
+            if (m_FontsMap.TryGetValue(key, out font))
+            {
+                ChangePixelMode(size, font);
+            }
+        }
+
+        private void ChangePixelMode(uint size, FreeTypeFont font)
+        {
+            if (font == null || font.font == null)
+                return;
+            bool isChanged = font.currentSize != size || font.sizeType != FreeTypeSizeType.usePixel;
+            if (!isChanged)
+                return;
+            font.currentSize = size;
+            font.sizeType = FreeTypeSizeType.usePixel;
+            ApplyFont(font);
         }
 
         private void ApplyFont(FreeTypeFont font)
