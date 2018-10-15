@@ -31,6 +31,26 @@ namespace FreeType
             m_CombineType = combineType;
         }
 
+        public void ForEachBTree(Action<BTreeNode<FontRectKey>> onCallBack)
+        {
+            if (onCallBack == null || m_Root == null)
+                return;
+       
+            ForEachBTree(m_Root.left, onCallBack);
+            ForEachBTree(m_Root.right, onCallBack);
+        }
+
+        private void ForEachBTree(BTreeNode<FontRectKey> node, Action<BTreeNode<FontRectKey>> onCallBack)
+        {
+            if (node == null || onCallBack == null)
+                return;
+            if (node.left != null)
+                ForEachBTree(node.left, onCallBack);
+            onCallBack(node);
+            if (node.right != null)
+                ForEachBTree(node.right, onCallBack);
+        }
+
         /// <summary>
         /// 重建字体, 先实现功能，后面可以考虑优化GC
         /// </summary>
