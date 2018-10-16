@@ -90,7 +90,7 @@ namespace FreeType {
                     (a.hDpi == b.hDpi) && (a.vDpi == b.vDpi);
         }
 
-        public static bool operator !=(FontType a, FontType b)
+        public static bool operator !=(FontRectKey a, FontRectKey b)
         {
             return !(a == b);
         }
