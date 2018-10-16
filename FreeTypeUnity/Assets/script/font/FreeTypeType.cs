@@ -86,6 +86,14 @@ namespace FreeType {
 
         public static bool operator ==(FontRectKey a, FontRectKey b)
         {
+            bool isANull = ReferenceEquals(a, null);
+            bool isBNull = ReferenceEquals(b, null);
+            if ((isANull && !isBNull) || (!isANull && isBNull))
+                return false;
+
+            if (isBNull && isBNull)
+                return true;
+            
             return  (a.value == b.value) && (a.fontSize == b.fontSize) && (a.fontSizeType == b.fontSizeType) &&
                     (a.hDpi == b.hDpi) && (a.vDpi == b.vDpi);
         }

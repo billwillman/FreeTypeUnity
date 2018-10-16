@@ -7,6 +7,8 @@ public class PicNode<KEY>
     public int width;
     public int height;
     public KEY key = default(KEY);
+    // 是否旋转
+    public bool IsRot = false;
 }
 
 public class BTreeNode<KEY>
